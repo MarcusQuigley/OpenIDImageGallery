@@ -13,29 +13,21 @@ namespace Identity.ApI
     {
         public static List<TestUser> Users = new List<TestUser>
         {
-            new TestUser{SubjectId = "818727", Username = "alice", Password = "alice", 
-                Claims = 
+            new TestUser{SubjectId = "09edbcf6-3b0f-408b-9ab5-2feeec14a12e", Username = "alice", Password = "alice",
+                Claims =
                 {
-                    new Claim(JwtClaimTypes.Name, "Alice Smith"),
+
                     new Claim(JwtClaimTypes.GivenName, "Alice"),
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
                 }
             },
-            new TestUser{SubjectId = "88421113", Username = "bob", Password = "bob", 
-                Claims = 
+            new TestUser{SubjectId = "9e990c23-45b3-4f88-950c-bfd9b0421cfa", Username = "bob", Password = "bob",
+                Claims =
                 {
-                    new Claim(JwtClaimTypes.Name, "Bob Smith"),
+
                     new Claim(JwtClaimTypes.GivenName, "Bob"),
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim("location", "somewhere")
+
                 }
             }
         };
