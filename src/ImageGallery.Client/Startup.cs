@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using ImageGallery.Client.HttpHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -30,13 +31,15 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            services.AddHttpContextAccessor();
+            services.AddTransient<BearerTokenHandler>();
             // create an HttpClient used for accessing the API
             services.AddHttpClient("APIClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44311/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            }).AddHttpMessageHandler<BearerTokenHandler>();
 
             // create an HttpClient used for accessing the API
             services.AddHttpClient("IDPClient", client =>
@@ -67,6 +70,8 @@ namespace ImageGallery.Client
                     //options.Scope.Add("profile");
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
+                    options.Scope.Add("imagegalleryapi");
+                    
                     // options.ClaimActions.Remove("nbf"); //not before time
                     options.ClaimActions.DeleteClaim("sid");//session id
                     options.ClaimActions.DeleteClaim("idp");//identity server
