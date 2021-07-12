@@ -28,7 +28,7 @@ namespace Identity.ApI
 
                     new Claim(JwtClaimTypes.GivenName, "Bob"),
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.Address, "1 Main st. NTC"),
+                    new Claim(JwtClaimTypes.Address, "11 Main st. NTC"),
                 }
             }
         };
