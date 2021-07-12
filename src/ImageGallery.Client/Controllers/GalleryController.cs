@@ -1,6 +1,10 @@
 ﻿using ImageGallery.Client.ViewModels;
 using ImageGallery.Model;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,18 +15,22 @@ using System.Threading.Tasks;
 
 namespace ImageGallery.Client.Controllers
 { 
+    [Authorize]
     public class GalleryController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<GalleryController> _logger;
 
-        public GalleryController(IHttpClientFactory httpClientFactory)
+        public GalleryController(IHttpClientFactory httpClientFactory, ILogger<GalleryController> logger)
         {
-            _httpClientFactory = httpClientFactory ?? 
+            _httpClientFactory = httpClientFactory ??
                 throw new ArgumentNullException(nameof(httpClientFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IActionResult> Index()
         {
+            await IdentityInformation();
             var httpClient = _httpClientFactory.CreateClient("APIClient");
 
             var request = new HttpRequestMessage(
@@ -171,6 +179,17 @@ namespace ImageGallery.Client.Controllers
             response.EnsureSuccessStatusCode();
 
             return RedirectToAction("Index");
+        }
+
+        private async Task IdentityInformation()
+        {
+            var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
+            _logger.LogInformation($"IdentityToken: {identityToken}");
+            foreach (var claim in User.Claims)
+            {
+                _logger.LogInformation($"Claim type: {claim.Type} - claim value: {claim.Value}");
+            }
+
         }
     }
 }
