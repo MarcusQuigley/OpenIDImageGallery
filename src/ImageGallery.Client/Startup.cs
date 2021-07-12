@@ -50,15 +50,19 @@ namespace ImageGallery.Client
                     options.ResponseType = "code";
                      options.UsePkce = true;
                     //options.CallbackPath = new PathString("...")
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
+                    //options.Scope.Add("openid");
+                    //options.Scope.Add("profile");
+                    options.Scope.Add("address");
                     options.SaveTokens = true;
                     options.ClientSecret = "secret";
-                    options.ClaimActions.Remove("nbf"); //not before time
+                   // options.ClaimActions.Remove("nbf"); //not before time
                     options.ClaimActions.DeleteClaim("sid");//session id
                     options.ClaimActions.DeleteClaim("idp");//identity server
                     options.ClaimActions.DeleteClaim("s_hash");// state hash value
                     options.ClaimActions.DeleteClaim("auth_time");//authentication time
+                    //options.ClaimActions.DeleteClaim("address");//user address
+
+                   // options.ClaimActions.MapUniqueJsonKey("address", "address");
                     options.GetClaimsFromUserInfoEndpoint = true;
                 });
         }
