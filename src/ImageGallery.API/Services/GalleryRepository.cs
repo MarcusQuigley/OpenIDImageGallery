@@ -25,9 +25,12 @@ namespace ImageGallery.API.Services
             return _context.Images.FirstOrDefault(i => i.Id == id);
         }
   
-        public IEnumerable<Image> GetImages()
+        public IEnumerable<Image> GetImages(string ownerId)
         {
+            if (string.IsNullOrWhiteSpace(ownerId))
+                throw new Exception("owberid is null");
             return _context.Images
+                .Where(i=>i.OwnerId==ownerId)
                 .OrderBy(i => i.Title).ToList();
         }
 

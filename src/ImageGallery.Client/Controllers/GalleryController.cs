@@ -49,13 +49,21 @@ namespace ImageGallery.Client.Controllers
             var response = await httpClient.SendAsync(
                 request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
-
-            using (var responseStream = await response.Content.ReadAsStreamAsync())
-            {   
-                return View(new GalleryIndexViewModel(
-                    await JsonSerializer.DeserializeAsync<List<Image>>(responseStream)));
-            }             
+          
+            if (response.IsSuccessStatusCode)
+            {
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    return View(new GalleryIndexViewModel(
+                        await JsonSerializer.DeserializeAsync<List<Image>>(responseStream)));
+                }
+            }
+            else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                return RedirectToAction("AccessDenied", "Authorization");
+            }
+            throw new Exception("Problem accessing the API");
         }
 
         public async Task<IActionResult> EditImage(Guid id)
