@@ -62,8 +62,8 @@ namespace ImageGallery.Client
                     //options.Scope.Add("openid");
                     //options.Scope.Add("profile");
                     options.Scope.Add("address");
-                   
-                   // options.ClaimActions.Remove("nbf"); //not before time
+                    options.Scope.Add("roles");
+                    // options.ClaimActions.Remove("nbf"); //not before time
                     options.ClaimActions.DeleteClaim("sid");//session id
                     options.ClaimActions.DeleteClaim("idp");//identity server
                     options.ClaimActions.DeleteClaim("s_hash");// state hash value
@@ -71,6 +71,7 @@ namespace ImageGallery.Client
                                                                   //options.ClaimActions.DeleteClaim("address");//user address
 
                     // options.ClaimActions.MapUniqueJsonKey("address", "address");
+                    options.ClaimActions.MapUniqueJsonKey("role", "role");
                     options.SaveTokens = true;
                     options.ClientSecret = "secret";
                     options.GetClaimsFromUserInfoEndpoint = true;
