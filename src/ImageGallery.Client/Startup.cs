@@ -28,7 +28,7 @@ namespace ImageGallery.Client
             // create an HttpClient used for accessing the API
             services.AddHttpClient("APIClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44366/");
+                client.BaseAddress = new Uri("https://localhost:44311/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
