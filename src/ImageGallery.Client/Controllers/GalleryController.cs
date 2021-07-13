@@ -33,8 +33,39 @@ namespace ImageGallery.Client.Controllers
 
         public async Task Logout()
         {
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
+            var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
+            if (metaDataResponse.IsError)
+            {
+                throw new Exception(metaDataResponse.Error);
+            }
+            var accessTokenRevocationResponse = await idpClient.RevokeTokenAsync(new TokenRevocationRequest { 
+                Address = metaDataResponse.RevocationEndpoint,
+                ClientId = "imagegalleryclient",
+                ClientSecret = "secret",
+                Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken)
+            });
+
+            if (accessTokenRevocationResponse.IsError)
+            {
+                throw new Exception(accessTokenRevocationResponse.Error);
+            }
+
+            var refreshTokenRevocationResponse = await idpClient.RevokeTokenAsync(new TokenRevocationRequest
+            {
+                Address = metaDataResponse.RevocationEndpoint,
+                ClientId = "imagegalleryclient",
+                ClientSecret = "secret",
+                Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken)
+            });
+
+            if (refreshTokenRevocationResponse.IsError)
+            {
+                throw new Exception(refreshTokenRevocationResponse.Error);
+            }
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         public async Task<IActionResult> Index()
