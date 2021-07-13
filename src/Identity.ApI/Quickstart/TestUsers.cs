@@ -21,6 +21,8 @@ namespace Identity.ApI
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),
                     new Claim(JwtClaimTypes.Address, "1 Main st. NTC"),
                     new Claim("role", "FreeUser"),
+                    new Claim("subscriptionlevel", "FreeUser"),
+                    new Claim("country", "nl"),
                 }
             },
             new TestUser{SubjectId = "9e990c23-45b3-4f88-950c-bfd9b0421cfa", Username = "bob", Password = "bob",
@@ -31,6 +33,8 @@ namespace Identity.ApI
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),
                     new Claim(JwtClaimTypes.Address, "11 Main st. NTC"),
                     new Claim("role", "PayingUser"),
+                    new Claim("subscriptionlevel", "PayingUser"),
+                    new Claim("country", "be"),
                 }
             }
         };

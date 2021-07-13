@@ -17,6 +17,8 @@ namespace Identity.ApI
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
                 new IdentityResource("roles", "Your roles", new List<string>(){ "role"}),
+                new IdentityResource("country", "The country you reside in", new List<string>(){ "country"}),
+                new IdentityResource("subscriptionlevel", "Your subscription level", new List<string>(){ "subscriptionlevel"}),
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -48,6 +50,8 @@ namespace Identity.ApI
                     IdentityServerConstants.StandardScopes.Address,
                     "roles",
                     "imagegalleryapi",
+                    "country",
+                    "subscriptionlevel",
                 },
                 ClientSecrets =
                 {
