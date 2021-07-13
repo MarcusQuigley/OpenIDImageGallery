@@ -41,6 +41,7 @@ namespace ImageGallery.Client
 
             services.AddHttpContextAccessor();
             services.AddTransient<BearerTokenHandler>();
+            
             // create an HttpClient used for accessing the API
             services.AddHttpClient("APIClient", client =>
             {
@@ -81,6 +82,7 @@ namespace ImageGallery.Client
                     options.Scope.Add("imagegalleryapi");
                     options.Scope.Add("country");
                     options.Scope.Add("subscriptionlevel");
+                    options.Scope.Add("offline_access");
 
                     // options.ClaimActions.Remove("nbf"); //not before time
                     options.ClaimActions.DeleteClaim("sid");//session id

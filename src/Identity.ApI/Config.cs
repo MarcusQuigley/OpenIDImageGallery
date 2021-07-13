@@ -31,6 +31,12 @@ namespace Identity.ApI
         public static IEnumerable<Client> Clients =>
             new Client[]
             { new Client{
+                //IdentityTokenLifetime = 300 //default 
+                //AuthorizationCodeLifetime = 300 //default
+                AccessTokenLifetime = 120, //access resources
+                AllowOfflineAccess = true, //offline scope
+                UpdateAccessTokenClaimsOnRefresh = true, 
+                
                 ClientName = "Image Gallery",
                 ClientId = "imagegalleryclient",
                 AllowedGrantTypes = GrantTypes.Code,
