@@ -23,9 +23,12 @@ namespace Identity.ApI
 
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
-            { 
+            {
                 new ApiResource("imagegalleryapi", "Image Gallery API",
-                    new List<string>(){ "role"}),
+                    new List<string>(){ "role" })
+                {
+                    ApiSecrets = {new Secret("apisecret".Sha256()) }
+                }
             };
 
         public static IEnumerable<Client> Clients =>
@@ -33,8 +36,10 @@ namespace Identity.ApI
             { new Client{
                 //IdentityTokenLifetime = 300 //default 
                 //AuthorizationCodeLifetime = 300 //default
+                AccessTokenType = AccessTokenType.Reference,
                 AccessTokenLifetime = 120, //access resources
                 AllowOfflineAccess = true, //offline scope
+
                 UpdateAccessTokenClaimsOnRefresh = true, 
                 
                 ClientName = "Image Gallery",
