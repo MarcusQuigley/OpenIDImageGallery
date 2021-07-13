@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Identity.ApI
 {
@@ -30,7 +32,8 @@ namespace Identity.ApI
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+            //builder.AddDeveloperSigningCredential();
+            builder.AddSigningCredential(LoadCertificatesFromStore());
         }
 
         public void Configure(IApplicationBuilder app)
@@ -38,6 +41,7 @@ namespace Identity.ApI
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+              //  IdentityModelEventSource.ShowPII = true;
             }
 
             // uncomment if you want to add MVC
@@ -52,6 +56,20 @@ namespace Identity.ApI
             {
                 endpoints.MapDefaultControllerRoute();
             });
+        }
+        private X509Certificate2 LoadCertificatesFromStore()
+        {
+            string thumbPrint = "ef561c796defc595c7cf65e5d35a89789499feee";
+            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                store.Open(OpenFlags.ReadOnly);
+                var certCollection = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, true);
+                if (certCollection.Count==0)
+                {
+                    throw new Exception("The specified certificate was not found");
+                }
+                return certCollection[0];
+            }
         }
     }
 }
