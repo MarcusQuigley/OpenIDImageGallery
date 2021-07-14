@@ -50,6 +50,13 @@ namespace Identity.ApI
                   builder.UseSqlServer(IDPConnectionString,options=> 
                     options.MigrationsAssembly(migrationsAssembly)); //get specific migration assembly
             });
+
+            builder.AddOperationalStore (options =>
+            {
+                options.ConfigureDbContext = builder =>
+                  builder.UseSqlServer(IDPConnectionString, options =>
+                     options.MigrationsAssembly(migrationsAssembly)); //get specific migration assembly
+            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -95,8 +102,8 @@ namespace Identity.ApI
             using (var serviceScope = app.ApplicationServices
                 .GetService<IServiceScopeFactory>().CreateScope())
             {
-                //serviceScope.ServiceProvider
-                //    .GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider
+                    .GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
                 var context = serviceScope.ServiceProvider
                     .GetRequiredService<ConfigurationDbContext>();
